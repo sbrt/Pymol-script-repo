@@ -116,7 +116,6 @@ def matriz_inercia(selection):
 
 	return ord_autoval
 
-
 def draw_inertia_axis(selection):
 	'''
 	DESCRIPTION
@@ -129,15 +128,15 @@ def draw_inertia_axis(selection):
 	x1, y1, z1 = cM[0], cM[1], cM[2]
 	x2, y2, z2 = cM[0]+50*axis1[0], cM[1]+50*axis1[1], cM[2]+50*axis1[2]
 	eje1 = [cgo.CYLINDER, x1, y1, z1, x2, y2, z2, 0.6, 1, 0, 0, 1, 0, 0, 0.0]
-	cmd.load_cgo(eje1, 'Inertia_Axis1')
+	cmd.load_cgo(eje1, selection + '.InertiaAxis1')
 	axis2 = ord_autovect[1]
 	x3, y3, z3 = cM[0]+40*axis2[0], cM[1]+40*axis2[1], cM[2]+40*axis2[2]
 	eje1 = [cgo.CYLINDER, x1, y1, z1, x3, y3, z3, 0.6, 1, 0.5, 0, 1, 0.5, 0, 0.0]
-	cmd.load_cgo(eje1, 'Inertia_Axis2')
+	cmd.load_cgo(eje1, selection + '.InertiaAxis2')
 	axis4 = ord_autovect[2]
 	x4, y4, z4 = cM[0]+30*axis4[0], cM[1]+30*axis4[1], cM[2]+30*axis4[2]
 	eje1 = [cgo.CYLINDER, x1, y1, z1, x4, y4, z4, 0.6, 1, 1, 0, 1, 1, 0, 0.0]
-	cmd.load_cgo(eje1, 'Inertia_Axis3')
+	cmd.load_cgo(eje1, selection + '.InertiaAxis3')
 
 def translacion_cM(selection):
 	'''
@@ -203,10 +202,10 @@ def draw_AABB(selection):
 
         """
 
-	AA_original = selection + "_original"
-	model_orig = cmd.create(AA_original, selection)
+	name_AA = selection + "_AxisAligned"
+	selection_AA = cmd.create(name_AA, selection)
 
-	([min_X, min_Y, min_Z],[max_X, max_Y, max_Z]) = cmd.get_extent(AA_original)
+	([min_X, min_Y, min_Z],[max_X, max_Y, max_Z]) = cmd.get_extent(name_AA)
 
 	print("The Axis Aligned Bounding Box (AABB) dimensions are (%.2f, %.2f, %.2f)" % (max_X-min_X, max_Y-min_Y, max_Z-min_Z))
 	print("The Axis Aligned Bounding Box (AABB) volume is %.2f A3" % ((max_X-min_X)*(max_Y-min_Y)*(max_Z-min_Z)))
@@ -266,9 +265,9 @@ def draw_AABB(selection):
 	cmd.distance(None, p0, p1)
 	cmd.hide("nonbonded")
 
-	boxName = "box_AABB_"  + str(randint(0, 100))
+	boxName = name_AA + "_box_AABB"
 	cmd.load_cgo(boundingBox,boxName)
-	return boxName
+	return name_AA
 
 
 def draw_IABB(selection):
@@ -340,7 +339,7 @@ def draw_IABB(selection):
 	cmd.distance(None, p4, p5)
 	cmd.hide("nonbonded")
 
-	boxName = "box_IABB_" + str(randint(0, 100))
+	boxName = selection + "_box_IABB"
 	cmd.load_cgo(boundingBox,boxName)
 	return boxName
 
@@ -355,10 +354,3 @@ def draw_Protein_Dimensions(selection):
 
 cmd.extend ("draw_Protein_Dimensions", draw_Protein_Dimensions)
 cmd.extend ("draw_BB", draw_BB)
-
-
-
-
-
-
-
